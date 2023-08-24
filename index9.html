@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        ul li {
+            padding: 5px;
+            background: #f4f4f4;
+            margin: 5px;
+        }
+
+        header {
+            background: #f4f4f4;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            margin: auto;
+            width: 500px;
+            overflow: auto;
+            padding: 3rem 2rem;
+        }
+
+        #my-form {
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+
+        #my-form label {
+            display: block;
+        }
+
+        #my-form input[type='text'] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            border: 0;
+            background: #333;
+            color: #fff;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        .bg-dark {
+            background: #333;
+            color: #fff;
+        }
+
+        .error {
+            background: orangered;
+            color: #fff;
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Js for beginners</h1>
+    </header>
+
+    <section class="container">
+        <form id="my-form">
+            <h1>Add User</h1>
+            <div class="msg"></div>
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name">
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="email">
+            </div>
+            <input type="submit" class="btn" value="Submit">
+
+            <ul id="users"></ul>
+
+            <ul class="items">
+                <!-- <li class="item">Item 1</li>
+                <li class="item">Item 1</li>
+                <li class="item">Item 1</li> -->
+            </ul>
+
+            <script>
+                // const ul = document.querySelector('.items');
+                // ul.children[0].textContent = 'HELLO';
+                // ul.children[0].style.color = 'green';
+                // ul.children[1].style.color = 'yellow';
+
+                const btn = document.querySelector(".btn");
+                btn.addEventListener('click',onSubmit);
+                // btn.addEventListener('mouseover',(e)=>{
+                //     e.preventDefault();
+                //     console.log("mouseover");
+                // })
+                // btn.addEventListener('mouseout',(e)=>{
+                //     e.preventDefault();
+                //     console.log("mouseout");
+                // })
+
+                const myForm = document.querySelector('#my-form');
+                const msg = document.querySelector('.msg');
+                const userList = document.querySelector('#users');
+                const name = document.querySelector('#name');
+                const email = document.querySelector('#email');
+                // y wala value q ki ni print hora
+                // console.log(name.value);
+                // myForm.addEventListener('submit',onSubmit);
+                function onSubmit(e){
+                
+                    e.preventDefault();
+                    console.log("clicked");
+                    if(name.value ===''||email.value === ''){
+                        msg.classList.add('error');
+                        msg.innerHTML = 'please entern all fields';
+
+                        setTimeout(() => msg.remove(),3000);
+                    }
+                    else{
+                        const li = document.createElement('li');
+                        // li.appendChild(document.createTextNode(`${name.value} : ${email.value}`));
+                        li.innerText = `${name.value} : ${email.value}`;
+                        userList.appendChild(li);
+                        
+                        // this is the how we can store the obj in localStorage //
+                        let myObj = {
+                            name: name.value,
+                            email: email.value
+                        }
+                        let myObj_serialized = JSON.stringify(myObj);
+                        localStorage.setItem("myObj",myObj_serialized);
+
+                        let myObj_deserialized = JSON.parse(localStorage.getItem('myObj'));
+                        console.log(myObj_deserialized);
+                    }
+                    name.value = '';
+                    email.value = '';
+                }
+            </script>
+        </form>
+    </section>
+</body>
+
+</html>
