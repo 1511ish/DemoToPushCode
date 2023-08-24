@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone">
+        <input type="submit" id="btn">
+
+        <ul id="lists">
+        </ul>
+    </form>
+
+    <script>
+        var ul = document.getElementById('lists');
+        var submit = document.getElementById('btn');
+        // console.log(submit);
+
+        submit.addEventListener('click', onSubmit);
+        function onSubmit(e) {
+            e.preventDefault();
+            var name = document.getElementById('name');
+            var email = document.getElementById('email');
+            var phone = document.getElementById('phone');
+
+            var myObj = {
+                name: name.value,
+                email: email.value,
+                phone: phone.value
+            }
+            localStorage.setItem(email.value,JSON.stringify(myObj));
+            var string = name.value + " - " + email.value + " - " + phone.value;
+            // console.log(string);
+            var li = document.createElement('li');
+            li.innerText = string;
+            ul.appendChild(li);
+            
+            name.value = '';
+            email.value = '';
+            phone.value = '';
+        }
+    </script>
+</body>
+
+</html>
