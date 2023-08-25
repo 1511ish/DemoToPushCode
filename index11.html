@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone">
+        <input type="submit" id="btn">
+
+        <ul id="lists">
+        </ul>
+    </form>
+
+    <script>
+        var ul = document.getElementById('lists');
+        var submit = document.getElementById('btn');
+
+        submit.addEventListener('click', onSubmit);
+        function onSubmit(e) {
+            e.preventDefault();
+            var name = document.getElementById('name');
+            var email = document.getElementById('email');
+            var phone = document.getElementById('phone');
+
+            var myObj = {
+                name: name.value,
+                email: email.value,
+                phone: phone.value
+            }
+            localStorage.setItem(email.value, JSON.stringify(myObj));
+            var string = name.value + " - " + email.value + " - " + phone.value;
+            // console.log(string);
+
+            var delete_btn = document.createElement('input');
+            delete_btn.type = "submit";
+            delete_btn.value = "delete";
+            delete_btn.className = 'delete';
+            var li = document.createElement('li');
+            li.className = "list";
+            li.appendChild(document.createTextNode(string));
+            // li.innerText = string;
+            console.log(li.firstChild);
+            // console.log(li);
+            li.appendChild(delete_btn);
+            // var text = document.createTextNode(string);
+            // li.appendChild(text);
+            ul.appendChild(li);
+
+            name.value = '';
+            email.value = '';
+            phone.value = '';
+        }
+
+        ul.addEventListener('click', removeItem);
+
+        function removeItem(e) {
+            e.preventDefault();
+            // console.log("under remove");
+            if (e.target.classList.contains('delete')) {
+                var li = e.target.parentElement;
+                console.log(li);
+                var text_arr = li.firstChild.textContent.split('-');
+                var key = text_arr[1].trim();
+                // console.log(key);
+
+                localStorage.removeItem(key);
+                ul.removeChild(li);  
+            }
+        }
+
+    </script>
+</body>
+
+</html>
