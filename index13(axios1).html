@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Appointment Booking App</h2>
+    <p><b>Note - </b>now, instead of storing the data in localStorage we will store the data on cloud(CrudCrud)</p>
+        <form action="">
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone">
+        <input type="submit" id="btn">
+
+        <ul id="lists">
+        </ul>
+
+    </form>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var ul = document.getElementById('lists');
+        var submit = document.getElementById('btn');
+
+        submit.addEventListener('click', onSubmit);
+        function onSubmit(e) {
+            e.preventDefault();
+            var name = document.getElementById('name');
+            var email = document.getElementById('email');
+            var phone = document.getElementById('phone');
+
+            var myObj = {
+                name: name.value,
+                email: email.value,
+                phone: phone.value
+            }
+            // localStorage.setItem(email.value, JSON.stringify(myObj));
+            //instead of localstorage we will store on cloud(CrudCrud)
+            axios.post('https://crudcrud.com/api/f463f195404e4502ae0857069894dd9f/appointment1',myObj)
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+            var string = name.value + " - " + email.value + " - " + phone.value;
+
+            var delete_btn = document.createElement('input');
+            delete_btn.type = "submit";
+            delete_btn.value = "delete";
+            delete_btn.className = 'delete';
+            var edit_btn = document.createElement('input');
+            edit_btn.type = "submit";
+            edit_btn.value = "edit";
+            edit_btn.className = 'edit';
+            var li = document.createElement('li');
+            li.className = "list";
+            li.appendChild(document.createTextNode(string));
+            console.log(li.firstChild);
+            li.appendChild(edit_btn);
+            li.appendChild(delete_btn);
+            ul.appendChild(li);
+
+            name.value = '';
+            email.value = '';
+            phone.value = '';
+        }
+
+        ul.addEventListener('click', removeItem);
+        ul.addEventListener('click', editData);
+
+        function removeItem(e) {
+            e.preventDefault();
+            if (e.target.classList.contains('delete')) {
+                var li = e.target.parentElement;
+                console.log(li);
+                var text_arr = li.firstChild.textContent.split('-');
+                var key = text_arr[1].trim();
+
+                localStorage.removeItem(key);
+                ul.removeChild(li);
+            }
+        }
+        function editData(e) {
+            e.preventDefault();
+            console.log("editData");
+            var name = document.getElementById('name');
+            var email = document.getElementById('email');
+            var phone = document.getElementById('phone');
+
+            if (e.target.classList.contains('edit')) {
+                var li = e.target.parentElement;
+                console.log(li);
+                var string = li.firstChild.textContent;
+                var text_arr = string.split('-');
+                console.log(text_arr);
+                name.value = text_arr[0];
+                email.value = text_arr[1];
+                phone.value = text_arr[2];
+
+                var key = text_arr[1].trim();
+                localStorage.removeItem(key);
+                ul.removeChild(li);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
